@@ -7,7 +7,7 @@ import SplitText from './SplitText';
 import LineSidebar from './LineSidebar';
 import './styles.css';
 
-const asset = (path) => '/' + path.split('/').map(encodeURIComponent).join('/');
+const asset = (path) => import.meta.env.BASE_URL + path.split('/').map(encodeURIComponent).join('/');
 
 const projects = [
   {
@@ -184,7 +184,7 @@ function About() {
       <div className="about-profile">
         <h2>吴美薪</h2>
         <p className="about-subtitle">工业设计专业 · 产品设计师</p>
-        <img className="about-photo" src="/chen4471.jpg" alt="吴美薪个人照片" />
+        <img className="about-photo" src={asset('chen4471.jpg')} alt="吴美薪个人照片" />
         <h3>自我评价</h3>
         <p className="about-description">我具备从用户研究、需求洞察到方案落地的完整产品思维。习惯以用户真实需求驱动决策，擅长用户研究、需求拆解、交互原型与可视化表达。具备较强执行力，能够制定清晰工作计划，合理安排时间，学习速度快、适应能力强，能快速进入企业并学习业务与技术。</p>
       </div>
@@ -204,7 +204,7 @@ function About() {
         <section className="about-block">
           <h2>专业能力</h2>
           <p className="about-skills-summary">精通PS、AI等平面软件；Rhino、3DMax、SolidWorks等三维建模软件；KeyShots、C4D等建模渲染软件；Arduino、Mixly等编程软件；Word、Excel、PPT等日常办公软件；ChatGPT、Codex、DeepSeek等人工智能软件。</p>
-          <a className="resume-link" href="/resume.jpg" target="_blank" rel="noopener noreferrer">查看简历原图 <ArrowUpRight size={16} /></a>
+          <a className="resume-link" href={asset('resume.jpg')} target="_blank" rel="noopener noreferrer">查看简历原图 <ArrowUpRight size={16} /></a>
         </section>
       </div>
     </SpotlightCard>
