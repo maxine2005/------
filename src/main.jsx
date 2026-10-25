@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowUpRight, ArrowRight, Menu, X } from 'lucide-react';
 import BlobCursor from './BlobCursor';
@@ -133,7 +133,39 @@ function Hero() {
 }
 
 function About() {
-  return <section className="about-page" id="about">
+  useLayoutEffect(() => {
+    const page = document.querySelector(".about-page-spotlight");
+    const selfHeading = page?.querySelector(".about-profile h3");
+    const selfText = page?.querySelector(".about-description");
+    const skillsHeading = page?.querySelector(".about-block:last-child > h2");
+    const skillsText = page?.querySelector(".about-skills-summary");
+    if (!page || !selfHeading || !selfText || !skillsHeading || !skillsText) return;
+
+    const alignContent = () => {
+      skillsHeading.style.transform = "";
+      skillsText.style.transform = "";
+      if (window.matchMedia("(max-width: 900px)").matches) return;
+      const headingOffset = selfHeading.getBoundingClientRect().top - skillsHeading.getBoundingClientRect().top;
+      const textOffset = selfText.getBoundingClientRect().top - skillsText.getBoundingClientRect().top;
+      skillsHeading.style.transform = `translateY(${headingOffset}px)`;
+      skillsText.style.transform = `translateY(${textOffset}px)`;
+    };
+
+    alignContent();
+    const observer = new ResizeObserver(alignContent);
+    observer.observe(page);
+    const photo = page.querySelector(".about-photo");
+    if (photo) observer.observe(photo);
+    window.addEventListener("resize", alignContent);
+    document.fonts?.ready.then(alignContent);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", alignContent);
+      skillsHeading.style.transform = "";
+      skillsText.style.transform = "";
+    };
+  }, []);  return <section className="about-page" id="about">
     <SpotlightCard
       className="about-page-spotlight"
       theme="light"
@@ -159,7 +191,7 @@ function About() {
       <div className="about-details">
         <section className="about-block about-education">
           <h2>教育背景</h2>
-          <div className="education-row"><div><b>大连民族大学</b><small>工业设计 · 国家一流专业 · 学士</small></div><strong>2023 — 2027</strong></div>
+          <div className="education-row"><div><b>大连民族大学</b><small className="education-degree">工业设计 · 国家一流专业 · 学士</small></div><strong>2023 — 2027</strong></div>
           <p className="education-note">专业前 20%　·　校级二等奖学金　·　优秀三好学生</p>
         </section>
         <section className="about-block">
@@ -171,7 +203,7 @@ function About() {
         </section>
         <section className="about-block">
           <h2>专业能力</h2>
-          <p className="about-skills-summary">精通PS、AI等平面软件；Rhino、3DMax、SolidWorks等三维建模软件；KeyShots、C4D等建模渲染软件；Arduino、Mixly等编程软件；Word、Excel、PPT等日常办公软件。</p>
+          <p className="about-skills-summary">精通PS、AI等平面软件；Rhino、3DMax、SolidWorks等三维建模软件；KeyShots、C4D等建模渲染软件；Arduino、Mixly等编程软件；Word、Excel、PPT等日常办公软件；ChatGPT、Codex、DeepSeek等人工智能软件。</p>
           <a className="resume-link" href="/resume.jpg" target="_blank" rel="noopener noreferrer">查看简历原图 <ArrowUpRight size={16} /></a>
         </section>
       </div>
@@ -191,12 +223,12 @@ function Media({ file, index }) {
 }
 
 function Project({ project, setActive }) {
-  return <article className="project" id={project.id} onMouseEnter={() => setActive(project.id)}><div className="project-heading"><span className="project-number">{project.number} <i /> CASE STUDY</span><span className="project-category">{project.category}</span></div><div className="project-title-row"><h3>{project.title}</h3><span className="project-en">{project.en}</span></div><p className="project-intro">{project.intro}</p>{project.empty ? <div className="empty-project"><span>04 — VISUAL STUDIES</span><p>目录项已保留<br /><small>该文件夹当前没有可展示的素材。</small></p></div> : project.groups.map((group, groupIndex) => <section className="asset-group" id={`${project.id}-group-${groupIndex}`} key={group.name}><div className="asset-group-head"><span>{group.name}</span><span>{String(group.files.length).padStart(2, '0')} ASSETS</span></div><div className={`media-grid ${group.files.length === 1 ? 'single' : ''} ${group.files.length > 4 ? 'dense' : ''} ${project.id === 'visual' || project.id === 'misc' || ((project.id === 'rocket' || project.id === 'mite') && groupIndex === 0) ? 'stacked' : ''}`}>{group.files.map((file, i) => <Media key={file.path} file={file} index={i} />)}</div></section>)}</article>
+  return <article className="project" id={project.id} onMouseEnter={() => setActive(project.id)}><div className="project-heading"><span className="project-number">{project.number} <i /> CASE STUDY</span><span className="project-category">{project.category}</span></div><div className="project-title-row"><h3>{project.title}</h3><span className="project-en">{project.en}</span></div><p className="project-intro">{project.intro}</p>{project.empty ? <div className="empty-project"><span>04 — VISUAL STUDIES</span><p>目录项已保留<br /><small>该文件夹当前没有可展示的素材。</small></p></div> : project.groups.map((group, groupIndex) => <section className="asset-group" id={`${project.id}-group-${groupIndex}`} key={group.name}><div className="asset-group-head"><span>{group.name}</span><span>{String(group.files.length).padStart(2, '0')} ASSETS</span></div><div data-mite-effects={project.id === 'mite' && groupIndex === 1 ? '' : undefined} className={`media-grid ${group.files.length === 1 ? 'single' : ''} ${group.files.length > 4 ? 'dense' : ''} ${project.id === 'visual' || project.id === 'misc' || ((project.id === 'rocket' || project.id === 'mite') && groupIndex === 0) ? 'stacked' : ''}`}>{group.files.map((file, i) => <Media key={file.path} file={file} index={i} />)}</div></section>)}</article>
 }
 
 function Work() {
   const [active, setActive] = useState('mite');
-  return <section className="work-section" id="work"><div className="section-wrap work-intro"><div className="section-kicker"><span>02 / SELECTED WORK</span><span>作品集</span></div><div className="work-intro-row"><div><p className="eyebrow">PRODUCT DESIGN / SELECTED PROJECTS</p><h2>从用户洞察，<br /><span>到产品落地。</span></h2></div><p>聚焦用户研究、需求拆解与产品方案表达。<br />呈现从问题洞察到设计落地的实践。</p></div></div><div className="work-layout"><TreeNav active={active} setActive={setActive} /><main className="project-list">{projects.map((project) => <Project key={project.id} project={project} setActive={setActive} />)}</main></div></section>
+  return <section className="work-section" id="work"><div className="section-wrap work-intro"><div className="section-kicker"><span>02 / SELECTED WORK</span><span>作品集</span></div><div className="work-intro-row"><div><p className="eyebrow">PRODUCT DESIGN / SELECTED PROJECTS</p><h2><SplitText tag="span" text="从用户洞察，" className="work-intro-first" effect="rise" splitType="chars" delay={70} duration={1} staggerFrom="center" trigger="view" hoverEffect="lift" threshold={0.15} rootMargin="-40px" textAlign="left" /><br /><SplitText tag="span" text="到产品落地。" className="work-intro-muted" effect="rise" splitType="chars" delay={70} duration={1} staggerFrom="center" trigger="view" hoverEffect="lift" threshold={0.15} rootMargin="-40px" textAlign="left" /></h2></div><p>聚焦用户研究、需求拆解与产品方案表达。<br />呈现从问题洞察到设计落地的实践。</p></div></div><div className="work-layout"><TreeNav active={active} setActive={setActive} /><main className="project-list">{projects.map((project) => <Project key={project.id} project={project} setActive={setActive} />)}</main></div></section>
 }
 
 function Contact() {
