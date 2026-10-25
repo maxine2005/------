@@ -5,6 +5,7 @@ import BlobCursor from './BlobCursor';
 import SpotlightCard from './SpotlightCard';
 import SplitText from './SplitText';
 import LineSidebar from './LineSidebar';
+import TextCursor from './TextCursor';
 import './styles.css';
 
 const asset = (path) => import.meta.env.BASE_URL + path.split('/').map(encodeURIComponent).join('/');
@@ -82,16 +83,23 @@ function SiteNavigation() {
 
 function InteractiveBlobCursor() {
   const [enabled, setEnabled] = useState(false);
+  const [homeVisible, setHomeVisible] = useState(true);
 
   useEffect(() => {
     const query = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
     const update = () => setEnabled(query.matches);
     update();
     query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
+    const home = document.querySelector('.portfolio-cover');
+    const observer = home ? new IntersectionObserver(([entry]) => setHomeVisible(entry.isIntersecting), { threshold: 0 }) : null;
+    observer?.observe(home);
+    return () => {
+      query.removeEventListener('change', update);
+      observer?.disconnect();
+    };
   }, []);
 
-  if (!enabled) return null;
+  if (!enabled || homeVisible) return null;
   return <BlobCursor
     material="ink"
     color="#181818"
@@ -114,6 +122,7 @@ function InteractiveBlobCursor() {
 
 function Hero() {
   return <section className="portfolio-cover" id="top">
+    <TextCursor text="Hello" mode="stamp" fontSize={23} fontWeight={600} spacing={82} maxPoints={5} shrink={0.35} fade={0.55} smoothing={0.3} color="#181818" style={{ position: 'absolute', inset: 0, zIndex: 40 }} />
     <div className="cover-identity">
       <svg className="cover-mark" viewBox="0 0 64 32" role="img" aria-label="Maxine 标志">
         <ellipse cx="32" cy="16" rx="29" ry="10" />
