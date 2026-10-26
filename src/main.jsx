@@ -57,7 +57,7 @@ const projects = [
     groups: [{ name: '平面与研究', files: [
       { label: '工作室课题展板', path: '作品集/5其他设计/工作室课题展板.jpg', type: 'image' },
       { label: '强省杯展板', path: '作品集/5其他设计/强省杯展板.jpg', type: 'image' },
-    ] }, { name: '机械动画', files: [
+    ] }, { name: '机械视频', files: [
       { label: '机械', path: '作品集/5其他设计/机械.mp4', type: 'video' },
       { label: '机械设计', path: '作品集/5其他设计/机械设计.mp4', type: 'video' },
     ] }],
