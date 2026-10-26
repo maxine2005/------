@@ -17,10 +17,10 @@ const projects = [
     groups: [
       { name: '1 展板', files: [{ label: '爆炸展板', path: '作品集/1除螨仪/1展板/爆炸展板.jpg', type: 'image' }] },
       { name: '2 效果图', files: [
-        { label: '场景 01', path: '作品集/1除螨仪/2效果图/场景1.jpg.png', type: 'image' },
+        { label: '场景 01', path: '作品集/1除螨仪/2效果图/场景1-web.jpg', type: 'image' },
         { label: '场景 02', path: '作品集/1除螨仪/2效果图/场景2.jpg', type: 'image' },
         { label: '场景 03', path: '作品集/1除螨仪/2效果图/场景3.jpg', type: 'image' },
-        { label: '场景 04', path: '作品集/1除螨仪/2效果图/场景4.png', type: 'image' },
+        { label: '场景 04', path: '作品集/1除螨仪/2效果图/场景4-web.jpg', type: 'image' },
         { label: '爆炸图 01', path: '作品集/1除螨仪/2效果图/爆炸图 (1).jpg', type: 'image' },
         { label: '爆炸图 02', path: '作品集/1除螨仪/2效果图/爆炸图 (2).jpg', type: 'image' },
         { label: '产品效果图 01', path: '作品集/1除螨仪/2效果图/除螨仪效果图.109.jpg', type: 'image' },
