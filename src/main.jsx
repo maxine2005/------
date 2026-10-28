@@ -229,7 +229,7 @@ function Media({ file, index }) {
   const imageUrl = file.path === '作品集/2火箭发射交互模型/2制作过程/5.jpg' ? `${url}?v=original` : file.path === '作品集/1除螨仪/1展板/爆炸展板.jpg' ? `${url}?v=exploded-board-2` : url;
   const videoUrl = file.type === 'video' && file.path.startsWith('作品集/5其他设计/') ? `${url}?v=h264` : url;
   if (file.type === 'video') return <div className="media video-wrap"><video controls controlsList="nodownload nofullscreen noremoteplayback" disablePictureInPicture disableRemotePlayback playsInline preload={file.path === '作品集/1除螨仪/产品动画/产品动画.mp4' ? 'auto' : 'metadata'} onContextMenu={(event) => event.preventDefault()} src={videoUrl} /><span className="media-caption">{String(index + 1).padStart(2, '0')} / {file.label}</span></div>;
-  if (file.type === 'pdf') return <div className="pdf-card"><div><span className="pdf-mark">PDF</span><p>完整项目文档<br /><small>研究 · 洞察 · 设计方案</small></p></div><iframe src={`${url}#toolbar=0&navpanes=0&zoom=40`} title="适老化智能电动车设计 PDF" loading="lazy" /><a className="pdf-mobile-open" href={url} target="_blank" rel="noreferrer">手机端查看源文件 <ArrowUpRight size={16} /></a></div>;
+  if (file.type === 'pdf') return <div className="pdf-card"><div><span className="pdf-mark">PDF</span><p>完整项目文档<br /><small>研究 · 洞察 · 设计方案</small></p></div><iframe src={`${url}#toolbar=0&navpanes=0&zoom=40`} title="适老化智能电动车设计 PDF" loading="lazy" /><a className="pdf-mobile-open" href={url} target="_blank" rel="noreferrer">查看源文件 <ArrowUpRight size={16} /></a></div>;
   return <div className="media image-wrap"><img loading="lazy" src={imageUrl} alt={file.label} /><span className="media-caption">{String(index + 1).padStart(2, '0')} / {file.label}</span></div>;
 }
 
