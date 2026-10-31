@@ -4,3 +4,5 @@ dist/
 .image-originals/
 .video-originals/
 .video-work/
+
+.pdf-originals/
